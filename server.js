@@ -22,9 +22,10 @@ app.get('/', (req,res) => {
 app.get('/charSheet', (req,resp) => {
     const selector = ".ct-character-sheet__inner";
     var data;
+    console.log(`x: ${req.query.w.x}, y: ${req.query.w.y}`);
     console.log(`getting character sheet request`);
     nightmare.goto("https://www.dndbeyond.com/profile/SethSenpai/characters/4521436")
-    .viewport(1920,1080)
+    .viewport(parseInt(req.query.w.x),parseInt(req.query.w.y))
     .wait(selector)
     .evaluate(() => document.querySelector('.ct-character-sheet__inner').innerHTML)
     .end()
