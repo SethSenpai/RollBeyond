@@ -11,3 +11,15 @@ i.material-icons {
 body{
     background: #263238 !important;
 }
+
+.mdl-layout.is-upgraded .mdl-layout__tab.is-active::after{
+    background: #c53131 !important;
+}
+
+header.mdl-layout__header{
+    background-color: #90A4AE !important;
+}
+
+.mdl-layout__tab-bar {
+    background: #90A4AE !important;
+}
