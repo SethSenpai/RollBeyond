@@ -13,8 +13,8 @@ app.use(auth({
 }));
 
 app.get('/', (req,res) => {
-    res.sendFile('/www/index.html', {root: __dirname});
     console.log(`connection coming in from: ${req.ip}`);
+    res.sendFile(__dirname + "/www/index.html");    
 });
 
 app.get('/charSheet', (req,resp) => {
@@ -22,10 +22,13 @@ app.get('/charSheet', (req,resp) => {
     request(`https://www.dndbeyond.com/profile/SethSenpai/characters/4521436`,(err,res,body) => {
         if(err){
             console.log(`Error: ${err} | StatusCode: ${res.statusCode}`);
-            resp.sendFile(__dirname + '/www/charSheetErr.html');
+            resp.sendFile(__dirname + "/www/charSheetErr.html");
         }
         else{
-            resp.sendFile(body);
+            var regSheet = /<div class="ct-character-sheet__inner" style="">(.*?)<\/div>/;
+            var sheet = regSheet.exec(body);
+            console.log(sheet);
+            resp.send(sheet);
         }
     });
 });
