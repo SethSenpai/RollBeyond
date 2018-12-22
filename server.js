@@ -1,8 +1,10 @@
+const Nightmare = require('nightmare');
+const nightmare = Nightmare();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const auth = require('express-basic-auth');
-const Browser = require('zombie');
+
 
 app.use(express.static('www'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,11 +20,24 @@ app.get('/', (req,res) => {
 });
 
 app.get('/charSheet', (req,resp) => {
+    const selector = ".ct-character-sheet__inner";
+    var data;
     console.log(`getting character sheet request`);
-    var br = new Browser();
-    br.visit("https://www.dndbeyond.com/profile/SethSenpai/characters/4521436", {waitFor:15000,debug:true}, (err,browser) => {
-        resp.send(br.html());
-    });
+    nightmare.goto("https://www.dndbeyond.com/profile/SethSenpai/characters/4521436")
+    .viewport(1920,1080)
+    .wait(selector)
+    .evaluate(() => document.querySelector('.ct-character-sheet__inner').innerHTML)
+    .end()
+    .then(datab =>{
+        resp.send(datab);
+        console.log(datab);
+    })
+    .catch(error => {
+        console.error("failed",error);
+    })
+
+    //console.log(data);
+    //resp.send(data);
 });
 
 app.listen(9999, () => console.log(`listening on port 9999`));
