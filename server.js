@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const auth = require('express-basic-auth');
-const request = require('request');
+const Browser = require('zombie');
 
 app.use(express.static('www'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,17 +19,9 @@ app.get('/', (req,res) => {
 
 app.get('/charSheet', (req,resp) => {
     console.log(`getting character sheet request`);
-    request(`https://www.dndbeyond.com/profile/SethSenpai/characters/4521436`,(err,res,body) => {
-        if(err){
-            console.log(`Error: ${err} | StatusCode: ${res.statusCode}`);
-            resp.sendFile(__dirname + "/www/charSheetErr.html");
-        }
-        else{
-            var regSheet = /<div class="ct-character-sheet__inner" style="">(.*?)<\/div>/;
-            var sheet = regSheet.exec(body);
-            console.log(sheet);
-            resp.send(sheet);
-        }
+    var br = new Browser();
+    br.visit("https://www.dndbeyond.com/profile/SethSenpai/characters/4521436", {waitFor:15000,debug:true}, (err,browser) => {
+        resp.send(br.html());
     });
 });
 
