@@ -1,9 +1,10 @@
 const Nightmare = require('nightmare');
-
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const auth = require('express-basic-auth');
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 
 app.use(express.static('www'));
@@ -14,14 +15,15 @@ app.use(auth({
     challenge: true
 }));
 
+//serve the index file
 app.get('/', (req,res) => {
-    console.log(`connection coming in from: ${req.ip}`);
     res.sendFile(__dirname + "/www/index.html");    
 });
 
+//function to scrape charactersheet
 app.get('/charSheet', (req,resp) => {
     const selector = ".ct-character-sheet__inner";
-    const nightmare = Nightmare({show:true}); //set show false to disable popup
+    const nightmare = Nightmare({show:false}); //set show false to disable popup
 
     var body;
     var actions;
@@ -93,4 +95,10 @@ app.get('/charSheet', (req,resp) => {
     //resp.send(data);
 });
 
-app.listen(9999, () => console.log(`listening on port 9999`));
+//socket.io connection event
+io.on('connection', (socket) => {
+    console.log(`a user connected from: ${socket.ip}`);
+    socket.on('drawing', (data) => socket.broadcast.emit('drawing', data)); //register connection to the drawing event
+});
+
+http.listen(9999, () => console.log(`listening on port 9999`));
