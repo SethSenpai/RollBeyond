@@ -1,0 +1,19 @@
+                                server.js
+                                    |
+                                    v
+                        ------ socket.io -------
+                        |          |           |
+                        v          v           v
+                        group     group       group   <---- webpage to select group UID/name/link?
+                    /////////json check//////////
+                    /////////saved data//////////
+                        |
+                        v
+        ----------- serve page --------------------------------  <--- webpage served through express
+        |               |               |                     |
+        |               v               |                     |
+        |          load charsheet       |                     v
+        v            from url           |                 sync rolls
+    sync video     nightmare.js         v                  socket.io
+     ????                          sync tabletop
+                                    socket.io
