@@ -13,6 +13,7 @@
         <script src="localFunctions.js" type="text/javascript"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/whiteboard.js"></script>
+        <script src="/jquery-ui.min.js"></script>
     </head>
     <body>
         <!-- Simple header with fixed tabs. -->
@@ -66,7 +67,22 @@
                 </section>
             </main>
         </div>
-        
+
+        <!-- Draggable rolls window that is always overlaying everything // maybe dockable or minimizable?-->
+        <div id="rollsWindow" class="draggable window">
+            <div class="topBar">
+                <span>Roll Dice</span>
+            </div>
+            <div class="rollsBox">
+                <div class="rollsViewer">
+                    <span>where tha rolls at</span>
+                </div>
+                <div class="rollsEntry">
+                    <input type="text" name="roll">
+                </div>
+            </div>
+        </div>
+            
         <script>
             var actionsDom;
             var spellsDom;
@@ -78,6 +94,7 @@
                 runGCS();
                 var socket = io();
                 startWhiteboard();
+                $( ".draggable" ).draggable();
             });
 
             function runGCS(){                

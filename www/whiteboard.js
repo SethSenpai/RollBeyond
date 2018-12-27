@@ -1,5 +1,7 @@
 'use strict';
 
+//wholesale copy from the socket.io whiteboard example. --> https://socket.io/demos/whiteboard/
+
 function startWhiteboard() {
 
   var socket = io();
