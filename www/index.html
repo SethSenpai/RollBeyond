@@ -69,8 +69,8 @@
         </div>
 
         <!-- Draggable rolls window that is always overlaying everything // maybe dockable or minimizable?-->
-        <div id="rollsWindow" class="draggable window">
-            <div class="topBar">
+        <div id="rollsWindow" class="window">
+            <div class="topBar draggable">
                 <span>Roll Dice</span>
             </div>
             <div class="rollsBox">
@@ -82,7 +82,8 @@
                 </div>
             </div>
         </div>
-            
+        
+        <!--scripting from here on out-->
         <script>
             var actionsDom;
             var spellsDom;
@@ -94,6 +95,7 @@
                 runGCS();
                 var socket = io();
                 startWhiteboard();
+                updateParentsWindow();
                 $( ".draggable" ).draggable();
             });
 

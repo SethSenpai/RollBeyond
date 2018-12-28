@@ -27,6 +27,16 @@ function getCharSheet(login, charName, windowSize){
     })
 }
 
+function updateParentsWindow(){
+    $('.topBar').mousedown(()=>{
+        var x = $('.topBar').attr('left');
+        var y = $('.topBar').attr('top');
+        console.log(`dragging x:${x}, y:${y}`);
+        $('#rollsWindow').attr('top',y);
+        $('#rollsWindow').attr('left', x);
+    });
+}
+
 function swapCharTab(n){
     console.log(`swapping content to ${n}`);
     switch(n){
