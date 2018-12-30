@@ -36,9 +36,11 @@ function startWhiteboard() {
 
 
   function drawLine(x0, y0, x1, y1, color, emit){
+    offset = $('.whiteboard').offset();
+
     context.beginPath();
-    context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
+    context.moveTo(x0 - offset.left, y0 - offset.top);
+    context.lineTo(x1 - offset.left, y1 - offset.top);
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
@@ -102,8 +104,8 @@ function startWhiteboard() {
 
   // make the canvas fill its parent
   function onResize() {
-    canvas.width = 1920;
-    canvas.height = 1080;
+    canvas.width = 2960;
+    canvas.height = 1960;
   }
 
 }

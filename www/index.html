@@ -37,7 +37,7 @@
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
                 <div class="page-content">
                     <!-- Table content goes here -->
-                    <div>
+                    <div id="whiteboardHolder">
                         <canvas class="whiteboard" ></canvas>
 
                         <div class="colors">
@@ -106,8 +106,8 @@
                 socket.on('chat', (data)=>{
                     console.log(`recieved: ${data}`);
                     $('.rollsViewer').append(`<br>${data}`);
-                    var t = $('.rollsViewer').prop('scrollHeight')
-                    $('.rollsViewer').scrollTop(t)
+                    var t = $('.rollsViewer').prop('scrollHeight');
+                    $('.rollsViewer').scrollTop(t);
                 });
                 //$( ".draggable" ).draggable();
             });
