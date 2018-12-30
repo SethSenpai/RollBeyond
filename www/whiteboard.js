@@ -36,15 +36,28 @@ function startWhiteboard() {
 
 
   function drawLine(x0, y0, x1, y1, color, emit){
-    offset = $('.whiteboard').offset();
+    if(emit){
+      offset = $('.whiteboard').offset();
 
-    context.beginPath();
-    context.moveTo(x0 - offset.left, y0 - offset.top);
-    context.lineTo(x1 - offset.left, y1 - offset.top);
-    context.strokeStyle = color;
-    context.lineWidth = 2;
-    context.stroke();
-    context.closePath();
+      context.beginPath();
+      context.moveTo(x0 - offset.left, y0 - offset.top);
+      context.lineTo(x1 - offset.left, y1 - offset.top);
+      context.strokeStyle = color;
+      context.lineWidth = 2;
+      context.stroke();
+      context.closePath();
+    }
+    else
+    {
+      context.beginPath();
+      context.moveTo(x0, y0);
+      context.lineTo(x1, y1);
+      context.strokeStyle = color;
+      context.lineWidth = 2;
+      context.stroke();
+      context.closePath();
+    }
+
 
     if (!emit) { return; }
     var w = canvas.width;
@@ -52,10 +65,10 @@ function startWhiteboard() {
 
     console.log(`emiting drawing`);
     socket.emit('drawing', {
-      x0: x0 / w,
-      y0: y0 / h,
-      x1: x1 / w,
-      y1: y1 / h,
+      x0: x0 - offset.left,
+      y0: y0 - offset.top,
+      x1: x1 - offset.left,
+      y1: y1 - offset.top,
       color: color
     });
   }
@@ -99,7 +112,7 @@ function startWhiteboard() {
   function onDrawingEvent(data){
     var w = canvas.width;
     var h = canvas.height;
-    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color);
+    drawLine(data.x0 , data.y0 , data.x1 , data.y1 , data.color);
   }
 
   // make the canvas fill its parent
