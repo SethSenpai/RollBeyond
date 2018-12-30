@@ -68,17 +68,20 @@
             </main>
         </div>
 
-        <!-- Draggable rolls window that is always overlaying everything // maybe dockable or minimizable?-->
+        <!-- Draggable rolls window that is always overlaying everything // maybe dockable or minimizable?--> 
         <div id="rollsWindow" class="window">
             <div class="topBar draggable">
                 <span>Roll Dice</span>
-            </div>
+            </div> 
             <div class="rollsBox">
                 <div class="rollsViewer">
                     <span>where tha rolls at</span>
                 </div>
                 <div class="rollsEntry">
-                    <input type="text" name="roll">
+                    <input class="enjoy-css" placeholder="/r xdy(+/-)z" id="confirmEnterRoll">
+                    <button class="mdl-button mdl-js-button mdl-button--icon" id="confirmRoll">
+                        <i class="material-icons specialButton">send</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -90,13 +93,23 @@
             var equipmentDom;
             var featuresDom;
             var creaturesDom;
+            var movingWindow = false;
+            var offset;
 
             $( document ).ready( ()=>{
                 runGCS();
                 var socket = io();
                 startWhiteboard();
-                updateParentsWindow();
-                $( ".draggable" ).draggable();
+                windowDraggingRolls();
+                enablerollsClick();
+
+                socket.on('chat', (data)=>{
+                    console.log(`recieved: ${data}`);
+                    $('.rollsViewer').append(`<br>${data}`);
+                    var t = $('.rollsViewer').prop('scrollHeight')
+                    $('.rollsViewer').scrollTop(t)
+                });
+                //$( ".draggable" ).draggable();
             });
 
             function runGCS(){                

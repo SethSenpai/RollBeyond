@@ -99,6 +99,84 @@ app.get('/charSheet', (req,resp) => {
 io.on('connection', (socket) => {
     console.log(`a user connected from: ${socket.ip}`);
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data)); //register connection to the drawing event
+    
+    socket.on('chat',(data)=>{ //handle rolls
+        console.log(`chat recieved`);
+        if(data.indexOf('/r') >= 0 && data.indexOf('/r') <= 0 ){
+            //console.log(`rolling dice`);
+            var command = data.substring(3);
+            var result = rollDice(command);
+            socket.broadcast.emit('chat',result);
+        }
+        else
+        {
+            //console.log(`got chat`);
+            socket.broadcast.emit('chat',data);
+        }
+    }); 
 });
+
+function rollDice(command){
+    var commandArray = command.split('d');
+    
+    if(commandArray.length > 1 && //all elements there
+        isNaN(parseInt(commandArray[0])) == false && //die is valid number
+        /^[0-9\+\-]+$/.test(commandArray[1]) == true)
+        { //rest only contains numbers and plus and minus
+            var multiplier = parseInt(commandArray[0]);
+            var diemod = [];
+            var pmmod;
+            var die;
+            var mod;
+
+            if(commandArray[1].indexOf('+') >= 0){
+                diemod = commandArray[1].split('+');
+                die = parseInt(diemod[0]);
+                mod = parseInt(diemod[1]);
+                pmmod = '+';
+            }
+            else if(commandArray[1].indexOf('-') >= 0){
+                diemod = commandArray[1].split('-');
+                die = parseInt(diemod[0]);
+                mod = parseInt(diemod[1]);
+                pmmod = '-';
+            }
+            else{
+                pmmod = ' ';
+                diemod = commandArray[1];
+                die = parseInt(diemod);
+            }
+
+            if(multiplier > 5000){
+                return "too many dice to roll";
+            }
+
+            var rollContainer = [];
+            for(i = 0; i < multiplier; i++){
+                rollContainer.push(Math.floor((Math.random() * die)+1));
+            }
+
+            var sum = rollContainer.reduce((a,b)=> a + b, 0);
+            var totalSum;
+            switch(pmmod){
+                case '+':
+                    totalSum = sum + mod;
+                    return `${rollContainer} + ${mod} = ${totalSum}`;
+                break;
+                case '-':
+                    totalSum = sum - mod;
+                    return `${rollContainer} - ${mod} = ${totalSum}`;
+                break;
+                case ' ':
+                    return `${rollContainer} = ${sum}`;
+                break;
+            }
+
+    }
+    else
+    {
+        return "error in roll";
+    }
+}
 
 http.listen(9999, () => console.log(`listening on port 9999`));

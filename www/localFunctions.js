@@ -1,3 +1,5 @@
+//import { Socket } from "dgram";
+
 function getCharSheet(login, charName, windowSize){
     $.get('/charSheet',{w:windowSize}, (data)=>{
         console.log(`requesting character sheet`);
@@ -27,13 +29,52 @@ function getCharSheet(login, charName, windowSize){
     })
 }
 
-function updateParentsWindow(){
+function enablerollsClick(){
+    var socket = io();
+
+    $('#confirmRoll').click(()=>{
+        var r = $('#confirmEnterRoll').val();
+        sendRollToServer(r);
+        $('#confirmEnterRoll').val('');
+    });
+
+    $('#confirmEnterRoll').keypress((e)=>{
+        if(e.which == 13){
+            e.preventDefault();
+            var r = $('#confirmEnterRoll').val();
+            sendRollToServer(r);
+            $('#confirmEnterRoll').val('');
+        }
+    });
+
+    function sendRollToServer(r){
+        console.log(`rolls send: ${r}`);
+        socket.emit('chat' , r);
+    }
+}
+
+function windowDraggingRolls(){
     $('.topBar').mousedown(()=>{
-        var x = $('.topBar').attr('left');
-        var y = $('.topBar').attr('top');
-        console.log(`dragging x:${x}, y:${y}`);
-        $('#rollsWindow').attr('top',y);
-        $('#rollsWindow').attr('left', x);
+        movingWindow = true;
+        offset = $('.topBar').offset();
+        offset.left = event.pageX- offset.left;
+        offset.top = event.pageY - offset.top;
+        //console.log(`offset: l${offset.left} t${offset.top}`);
+    });
+
+    $('body').mousemove(()=>{
+        if(movingWindow == true){
+            var x = event.pageX - offset.left;
+            var y = event.pageY - offset.top;
+            //console.log(`dragging x:${parentOffset.left}, y:${parentOffset.top}`);
+            $('#rollsWindow').css('top',y);
+            $('#rollsWindow').css('left', x);
+        }
+    });
+
+    $('body').mouseup(()=>{
+        movingWindow = false;
+        //console.log(`upclick`);
     });
 }
 
