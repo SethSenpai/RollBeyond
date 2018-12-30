@@ -97,11 +97,11 @@ app.get('/charSheet', (req,resp) => {
 
 //socket.io connection event
 io.on('connection', (socket) => {
-    console.log(`a user connected from: ${socket.ip}`);
+    //console.log(`a user connected from: ${socket.ip}`);
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data)); //register connection to the drawing event
     
     socket.on('chat',(data)=>{ //handle rolls
-        console.log(`chat recieved`);
+        //console.log(`chat recieved`);
         if(data.indexOf('/r') >= 0 && data.indexOf('/r') <= 0 ){
             //console.log(`rolling dice`);
             var command = data.substring(3);
@@ -117,6 +117,7 @@ io.on('connection', (socket) => {
 });
 
 function rollDice(command){
+    command = command.replace(/ /g,'');
     var commandArray = command.split('d');
     
     if(commandArray.length > 1 && //all elements there
