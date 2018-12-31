@@ -8,6 +8,8 @@ function startWhiteboard() {
   var canvas = document.getElementsByClassName('whiteboard')[0];
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
+  var tool = 2;
+  var linewd = 2;
 
   var current = {
     color: 'black'
@@ -24,6 +26,19 @@ function startWhiteboard() {
   canvas.addEventListener('touchend', onMouseUp, false);
   canvas.addEventListener('touchcancel', onMouseUp, false);
   canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
+
+  //add event listener for tool selection
+  $("input[type='radio']").on('change', function () {
+    tool = $("input[name='options']:checked").val();
+    if(tool == 3){
+      current.color = '#d9d8ca';
+      linewd = 50;
+    }
+    if(tool == 1){
+      current.color = 'black';
+      linewd = 2;
+    }
+  });
 
   for (var i = 0; i < colors.length; i++){
     colors[i].addEventListener('click', onColorUpdate, false);
@@ -43,7 +58,7 @@ function startWhiteboard() {
       context.moveTo(x0 - offset.left, y0 - offset.top);
       context.lineTo(x1 - offset.left, y1 - offset.top);
       context.strokeStyle = color;
-      context.lineWidth = 2;
+      context.lineWidth = linewd;
       context.stroke();
       context.closePath();
     }
@@ -53,7 +68,7 @@ function startWhiteboard() {
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
       context.strokeStyle = color;
-      context.lineWidth = 2;
+      context.lineWidth = linewd;
       context.stroke();
       context.closePath();
     }
@@ -74,18 +89,21 @@ function startWhiteboard() {
   }
 
   function onMouseDown(e){
+    if(tool != 1 && tool !=3){return;}
     drawing = true;
     current.x = e.clientX||e.touches[0].clientX;
     current.y = e.clientY||e.touches[0].clientY;
   }
 
   function onMouseUp(e){
+    if (tool != 1 && tool !=3) { return; }
     if (!drawing) { return; }
     drawing = false;
     drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
   }
 
   function onMouseMove(e){
+    if (tool != 1 && tool !=3) { return; }
     if (!drawing) { return; }
     drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
     current.x = e.clientX||e.touches[0].clientX;

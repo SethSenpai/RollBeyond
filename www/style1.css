@@ -9,7 +9,8 @@ i.material-icons {
 }
 
 body{
-    background: #9E9E9E !important;
+    background: #757575 !important;
+    overflow-y:auto !important;
 }
 
 .mdl-layout.is-upgraded .mdl-layout__tab.is-active::after{
@@ -17,29 +18,63 @@ body{
 }
 
 header.mdl-layout__header{
-    background-color: #616161 !important;
+    background-color: #EEEEEE !important;
 }
 
 .mdl-layout__tab-bar {
-    background: #616161 !important;
+    background: #EEEEEE !important;
+}
+
+.mdl-layout__header
+{
+    color:#555 !important;
+}
+
+.mdl-layout__tab{
+    color:#555 !important;
+}
+
+.mdl-layout__drawer-button{
+    color:#555 !important;
 }
 
 .whiteboard {
-    background-color: #9E9E9E;
+    background-color: #d9d8ca;
   }
   
   .colors {
-    position: fixed;
-    top: 132px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .toolbar{
+      position:fixed;
+      top:112px;
+      width:50%;
+      height: 48px;
+      padding: 10px;
+      left:0px;
+      background-color: #eeeeee;
+      display: block;
   }
   
   .color {
     display: inline-block;
-    height: 48px;
-    width: 48px;
+    height: 28px;
+    width: 28px;
+  }
+
+  .pen {
+      float: left;
+      margin-right: 10px;
+  }
+
+  .mouse{
+      float:left;
+      margin-right:10px;
   }
   
-  .color.black { background-color: black; }
+  .color.black { background-color: black;}
   .color.red { background-color: red; }
   .color.green { background-color: green; }
   .color.blue { background-color: blue; }
@@ -47,8 +82,8 @@ header.mdl-layout__header{
 
 #rollsWindow{
     position: absolute;
-    top:135px;
-    left:1219px;
+    top:169px;
+    left:10px;
     /*border:1px solid black;*/
     z-index: 100;
     display: block;
@@ -56,13 +91,13 @@ header.mdl-layout__header{
 }
 
 .topBar span{
-    color:white;
+    color:#eee;
 }
 
 .topBar{
     width:200px;
     height:30px;
-    background: #212121;
+    background: #555;
     display:block;
     padding:7px;
 }
@@ -70,7 +105,7 @@ header.mdl-layout__header{
 .rollsBox{
     width:200px;
     height:300px;
-    background: #616161;
+    background: #EEEEEE;
     display:block;
     padding:10px;
 }
@@ -99,7 +134,7 @@ header.mdl-layout__header{
     border: 0 solid #b7b7b7;
     border-bottom-width: 1px;
     font: normal 14px/normal Arial, Helvetica, sans-serif;
-    color: rgba(255,255,255,1);
+    color: #555;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     background: rgba(252,252,252,0);
@@ -113,6 +148,29 @@ header.mdl-layout__header{
 #whiteboardHolder{
     width:3000px;
     height:2000px;
-    background-color: #212121;
+    background-color: #757575;
     padding:20px;
+}
+
+.toolbutton i{
+    width:28px !important;
+    height:28px;
+    margin-top:12px !important;
+    transform: translate(-14px,-23px) !important;
+}
+
+.mdl-button--fab{
+    width:32px !important;
+    height:32px !important;
+    min-width: 32px !important;
+}
+
+.imgadd{
+    float: left;
+    margin-right: 10px;
+}
+
+.pan{
+    float: left;
+    margin-right: 10px;
 }

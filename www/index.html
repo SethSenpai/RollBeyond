@@ -13,6 +13,7 @@
         <script src="localFunctions.js" type="text/javascript"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/whiteboard.js"></script>
+        <script src="/panning.js"></script>
         <script src="/jquery-ui.min.js"></script>
     </head>
     <body>
@@ -39,13 +40,39 @@
                     <!-- Table content goes here -->
                     <div id="whiteboardHolder">
                         <canvas class="whiteboard" ></canvas>
+                        <div class="toolbar">
+                            <div class="pen">
+                                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                                    <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1">
+                                    <span class="mdl-radio__label">Pen</span>
+                                  </label>
+                            </div>
+                            <div class="colors">
+                                <div class="color black"></div>
+                                <div class="color red"></div>
+                                <div class="color green"></div>
+                                <div class="color blue"></div>
+                                <div class="color yellow"></div>
+                            </div>
 
-                        <div class="colors">
-                            <div class="color black"></div>
-                            <div class="color red"></div>
-                            <div class="color green"></div>
-                            <div class="color blue"></div>
-                            <div class="color yellow"></div>
+                            <div class="mouse">
+                                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                                    <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="2" checked>
+                                    <span class="mdl-radio__label">Selection</span>
+                                  </label>
+                            </div>
+
+                            <div class="pan">
+                                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                                    <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="3">
+                                    <span class="mdl-radio__label">Eraser</span>
+                                  </label>
+                            </div>
+                            <div class="imgadd">
+                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab toolbuttonbut">
+                                    <i class="material-icons toolbutton">image</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,6 +129,7 @@
                 startWhiteboard();
                 windowDraggingRolls();
                 enablerollsClick();
+                //runPanningHooks();
 
                 socket.on('chat', (data)=>{
                     console.log(`recieved: ${data}`);
