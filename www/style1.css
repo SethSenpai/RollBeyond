@@ -174,3 +174,9 @@ header.mdl-layout__header{
     float: left;
     margin-right: 10px;
 }
+
+.webcams{
+    position: fixed;
+    top: 200px;
+    left:200px;
+}

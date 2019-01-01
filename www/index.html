@@ -14,6 +14,7 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="/whiteboard.js"></script>
         <script src="/panning.js"></script>
+        <script src="webcam.js"></script>
         <script src="/jquery-ui.min.js"></script>
     </head>
     <body>
@@ -112,6 +113,12 @@
                 </div>
             </div>
         </div>
+
+        <!-- webcam containers -->
+        <div class="webcams" id="self">
+            <video src="" id="video" style="width:680px;height:320px;" autoplay="true"></video>
+            <canvas style="display:none;" id="preview"></canvas>
+        </div>
         
         <!--scripting from here on out-->
         <script>
@@ -130,6 +137,7 @@
                 windowDraggingRolls();
                 enablerollsClick();
                 //runPanningHooks();
+                startWebCam();
 
                 socket.on('chat', (data)=>{
                     console.log(`recieved: ${data}`);

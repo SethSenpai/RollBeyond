@@ -113,7 +113,11 @@ io.on('connection', (socket) => {
             //console.log(`got chat`);
             socket.broadcast.emit('chat',data);
         }
-    }); 
+    });
+    
+    socket.on('stream', (frame) => {
+        socket.broadcast.emit('stream',frame);
+    });
 });
 
 function rollDice(command){
