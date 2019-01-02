@@ -152,7 +152,7 @@ header.mdl-layout__header{
     padding:20px;
 }
 
-.toolbutton i{
+.toolbutton{
     width:28px !important;
     height:28px;
     margin-top:12px !important;
@@ -179,4 +179,5 @@ header.mdl-layout__header{
     position: fixed;
     top: 200px;
     left:200px;
+    z-index: 80;
 }

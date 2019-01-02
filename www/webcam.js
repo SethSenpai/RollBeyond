@@ -6,12 +6,19 @@ context.width;
 context.height;
 var video;
 var socket;
-
+var mediaSource;
+var img;
 
 function loadCam(stream)
 {
-  video.src = window.URL.createObjectURL(stream);
-  //logger('camara cargada correctamente [OK]');
+  try{
+    mediaSource = new MediaStream(stream);
+    video.srcObject = mediaSource;
+  }
+  catch (error){ //src fallback
+    console.log(`err: ${error}`)
+    video.src = URL.createObjectURL(stream);
+  }
 }
 
 function loadFail()
@@ -32,6 +39,7 @@ function startWebCam(){
     context.height = canvas.height;
     video = document.getElementById("video");
     socket = io();
+    img = document.getElementById('play');
 
     navigator.getUserMedia= (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
       if(navigator.getUserMedia)
@@ -40,5 +48,9 @@ function startWebCam(){
       }
       setInterval(function(){
         viewVideo(video,context);
-      },120);
+      },33);
+
+      socket.on('stream',(image)=>{
+            img.src = image;
+      });
 }
