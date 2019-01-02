@@ -97,24 +97,23 @@ app.get('/charSheet', (req,resp) => {
 
 //socket.io connection event
 io.on('connection', (socket) => {
-    //console.log(`a user connected from: ${socket.ip}`);
+    //whiteboard socket
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data)); //register connection to the drawing event
     
+    //rolls and chat socket
     socket.on('chat',(data)=>{ //handle rolls
-        //console.log(`chat recieved`);
         if(data.indexOf('/r') >= 0 && data.indexOf('/r') <= 0 ){
-            //console.log(`rolling dice`);
             var command = data.substring(3);
             var result = rollDice(command);
             socket.broadcast.emit('chat',result);
         }
         else
         {
-            //console.log(`got chat`);
             socket.broadcast.emit('chat',data);
         }
     });
     
+    //webcam streaming
     socket.on('stream', (frame) => {
         socket.broadcast.emit('stream',frame);
     });

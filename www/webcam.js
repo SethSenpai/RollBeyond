@@ -1,7 +1,7 @@
 var canvas;
 var context;
-canvas.width = 320;
-canvas.height = 240;
+canvas.width = 200;
+canvas.height = 200;
 context.width;
 context.height;
 var video;
@@ -23,7 +23,7 @@ function loadCam(stream)
 
 function loadFail()
 {
-  logger('Camara no encontrada, revise la camara');
+  console.log(`failed to load webcam, is it plugged in and do you have given permission?`);
 }
 
 function viewVideo(video,context)
@@ -44,7 +44,7 @@ function startWebCam(){
     navigator.getUserMedia= (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
       if(navigator.getUserMedia)
       {
-        navigator.getUserMedia({video : true},loadCam,loadFail);
+        navigator.getUserMedia({video : {width:200,height:200}},loadCam,loadFail);
       }
       setInterval(function(){
         viewVideo(video,context);
