@@ -22,7 +22,7 @@ app.get('/', (req,res) => {
 
 //function to scrape charactersheet
 app.get('/charSheet', (req,resp) => {
-    const selector = ".ct-character-sheet__inner";
+    const selector = ".ct-subsection--primary-box";
     const nightmare = Nightmare({show:false}); //set show false to disable popup
 
     var body;

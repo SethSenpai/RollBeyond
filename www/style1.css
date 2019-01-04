@@ -11,6 +11,7 @@ i.material-icons {
 body{
     background: #757575 !important;
     overflow-y:auto !important;
+    overflow-x:auto !important;
 }
 
 .mdl-layout.is-upgraded .mdl-layout__tab.is-active::after{
@@ -186,4 +187,17 @@ header.mdl-layout__header{
     background:black;
     width: 200px;
     height: 200px;
+}
+
+.remotecam {
+    top: -200px;
+    left: 210px;
+    float: left;
+    width: 200px;
+    position: relative;
+    height: 200px;
+}
+
+.mdl-layout__content{
+    overflow: scroll !important;
 }

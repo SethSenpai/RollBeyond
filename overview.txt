@@ -20,6 +20,6 @@
 
 
 TODO:
-eraser bug on rx -> size not set / reset -> transmit size in data.
-img webcam bug expansion placement
-panning!
+prevent selfviewing webcam stream -> requires users
+pinging!
+canvas data destruction on resize

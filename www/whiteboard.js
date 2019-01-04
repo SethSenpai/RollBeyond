@@ -27,6 +27,9 @@ function startWhiteboard() {
   canvas.addEventListener('touchcancel', onMouseUp, false);
   canvas.addEventListener('touchmove', throttle(onMouseMove, 10), false);
 
+  [...document.querySelectorAll(".noDefault")].forEach(e => 
+    e.addEventListener('contextmenu', el => el.preventDefault()));
+
   //add event listener for tool selection
   $("input[type='radio']").on('change', function () {
     tool = $("input[name='options']:checked").val();
@@ -50,7 +53,7 @@ function startWhiteboard() {
   onResize();
 
 
-  function drawLine(x0, y0, x1, y1, color, emit){
+  function drawLine(x0, y0, x1, y1, color, emit, lineW){
     if(emit){
       offset = $('.whiteboard').offset();
 
@@ -68,7 +71,7 @@ function startWhiteboard() {
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
       context.strokeStyle = color;
-      context.lineWidth = linewd;
+      context.lineWidth = lineW;
       context.stroke();
       context.closePath();
     }
@@ -84,12 +87,14 @@ function startWhiteboard() {
       y0: y0 - offset.top,
       x1: x1 - offset.left,
       y1: y1 - offset.top,
-      color: color
+      color: color,
+      width: linewd
     });
   }
 
   function onMouseDown(e){
     if(tool != 1 && tool !=3){return;}
+    if(e.button != 0){return};
     drawing = true;
     current.x = e.clientX||e.touches[0].clientX;
     current.y = e.clientY||e.touches[0].clientY;
@@ -98,20 +103,25 @@ function startWhiteboard() {
   function onMouseUp(e){
     if (tool != 1 && tool !=3) { return; }
     if (!drawing) { return; }
+    if(e.button != 0){return};
     drawing = false;
-    drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
+    drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true, 2);
   }
 
   function onMouseMove(e){
     if (tool != 1 && tool !=3) { return; }
     if (!drawing) { return; }
-    drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true);
+    if(e.button != 0){return};
+    drawLine(current.x, current.y, e.clientX||e.touches[0].clientX, e.clientY||e.touches[0].clientY, current.color, true, 2);
     current.x = e.clientX||e.touches[0].clientX;
     current.y = e.clientY||e.touches[0].clientY;
   }
 
   function onColorUpdate(e){
-    current.color = e.target.className.split(' ')[1];
+    if(tool != 3)
+    {
+      current.color = e.target.className.split(' ')[1];
+    }
   }
 
   // limit the number of events per second
@@ -130,7 +140,7 @@ function startWhiteboard() {
   function onDrawingEvent(data){
     var w = canvas.width;
     var h = canvas.height;
-    drawLine(data.x0 , data.y0 , data.x1 , data.y1 , data.color);
+    drawLine(data.x0 , data.y0 , data.x1 , data.y1 , data.color , false , data.width);
   }
 
   // make the canvas fill its parent

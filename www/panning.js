@@ -35,7 +35,7 @@ function runPanningHooks(){
             var y = event.pageY - startpoint.y;
             console.log(`x: ${x} y: ${y}`);
             //$('#mdl-layout__content').scrollTop(y);
-            $('#mdl-layout__content').scrollTop($('#mdl-layout__content').scrollTop() + y);
+            $('.mdl-layout__content').scrollTop($('.mdl-layout__content').scrollTop() + y);
             //$('.page-content').scrollLeft(x* -1);
         }
     }
