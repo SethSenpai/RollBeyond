@@ -198,15 +198,12 @@ header.mdl-layout__header{
     bottom: 5px;
     left:5px;
     z-index: 80;
-    background:black;
-    width: 200px;
     height: 200px;
 }
 
 .remotecam {
-    top: -200px;
-    left: 210px;
-    float: left;
+    float: right;
+    margin-left: 10px;
     width: 200px;
     position: relative;
     height: 200px;

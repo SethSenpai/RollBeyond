@@ -1,10 +1,20 @@
 const Nightmare = require('nightmare');
+const https = require('https');
 const express = require('express');
 const app = express();
+const fs = require('fs');
+var options = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+};
+var serverPort = 9999;
+var server = https.createServer(options,app);
+//const http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const auth = require('express-basic-auth');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+//const io = require('socket.io')(http);
+var io = require('socket.io')(server);
+
 
 app.use(express.static('www'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -121,7 +131,7 @@ io.on('connection', (socket) => {
     
     //webcam streaming
     socket.on('stream', (frame) => {
-        socket.broadcast.emit('stream',frame);
+        socket.broadcast.emit('stream',{img:frame.img,user:frame.user});
     });
 
     
@@ -200,4 +210,7 @@ function rollDice(command){
     }
 }
 
-http.listen(9999, () => console.log(`listening on port 9999`));
+//http.listen(9999, () => console.log(`listening on port 9999`));
+server.listen(serverPort, () => {
+    console.log(`https server on ${serverPort}`);
+})

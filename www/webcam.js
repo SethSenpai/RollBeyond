@@ -29,7 +29,7 @@ function loadFail()
 function viewVideo(video,context)
 {
   context.drawImage(video,0,0,context.width, context.height);
-  socket.emit('stream',canvas.toDataURL('image/webp'));
+  socket.emit('stream',{img:canvas.toDataURL('image/webp'),user:userNameLocal});
 }
 
 function startWebCam(){
@@ -51,6 +51,18 @@ function startWebCam(){
       },33);
 
       socket.on('stream',(image)=>{
-            img.src = image;
+            if(image.user != userNameLocal)
+            {
+              //console.log(image.user);
+              var a = document.querySelector(`#${image.user}`);
+              //console.log(a);
+              if(a == null){
+                console.log(`adding element`);
+                $('.webcams').append(`<img id='${image.user}' class="remotecam">`)
+              }
+              var remote = document.getElementById(`${image.user}`);
+              remote.src = image.img;
+            }
+            
       });
 }
