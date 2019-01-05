@@ -26,6 +26,7 @@ function getCharSheet(login, charName, windowSize){
         featuresDom = data.f;
         creaturesDom = data.c;
         console.log(data);
+        autoRollWrapper();
     })
 }
 

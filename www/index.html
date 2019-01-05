@@ -17,6 +17,7 @@
         <script src="/webcam.js"></script>
         <script src="/userGroups.js"></script>
         <script src="/jquery-ui.min.js"></script>
+        <script src="/automatedRolls.js"></script>
     </head>
     <body>
         <!-- Simple header with fixed tabs. -->
@@ -158,11 +159,24 @@
                     $('.rollsViewer').scrollTop(t);
                 });
                 //$( ".draggable" ).draggable();
+
+                socket.on('userLeft', (data)=>{
+                    console.log(`user ${data.user} disconnected`);
+                    $(`#${data.user}`).remove();
+                });
             });
 
             function runGCS(){                
                 var windowS = {x:window.innerWidth,y:window.innerHeight};
                 getCharSheet("login",characterSheetLocal,windowS);
+            }
+
+            function rollWrapper(rollCommand){
+                socket.emit('chat' , {c:rollCommand,u:userNameLocal});
+            }
+
+            function autoRollWrapper(){
+                hookSheetAutoRolls();
             }
         </script>
     </body>

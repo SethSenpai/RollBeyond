@@ -144,6 +144,10 @@ io.on('connection', (socket) => {
         addedUser = true;
         console.log(socket.username);
     });
+
+    socket.on('disconnect', () =>{
+        socket.broadcast.emit('userLeft',{user:socket.username});
+    });
 });
 
 function rollDice(command){
