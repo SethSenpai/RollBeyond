@@ -4,7 +4,7 @@
 
 function startWhiteboard() {
 
-  var socket = io();
+  //var socket = io();
   var canvas = document.getElementsByClassName('whiteboard')[0];
   var colors = document.getElementsByClassName('color');
   var context = canvas.getContext('2d');
@@ -15,6 +15,9 @@ function startWhiteboard() {
     color: 'black'
   };
   var drawing = false;
+
+  canvas.width = 2960;
+  canvas.height = 1960;
 
   canvas.addEventListener('mousedown', onMouseDown, false);
   canvas.addEventListener('mouseup', onMouseUp, false);
@@ -49,8 +52,8 @@ function startWhiteboard() {
 
   socket.on('drawing', onDrawingEvent);
 
-  window.addEventListener('resize', onResize, false);
-  onResize();
+  //window.addEventListener('resize', onResize, false);
+  //onResize();
 
 
   function drawLine(x0, y0, x1, y1, color, emit, lineW){
@@ -78,8 +81,8 @@ function startWhiteboard() {
 
 
     if (!emit) { return; }
-    var w = canvas.width;
-    var h = canvas.height;
+    var w = 2960;
+    var h = 1960;
 
     console.log(`emiting drawing`);
     socket.emit('drawing', {

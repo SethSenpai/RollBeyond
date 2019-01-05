@@ -6,7 +6,6 @@ const auth = require('express-basic-auth');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-
 app.use(express.static('www'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,7 +33,7 @@ app.get('/charSheet', (req,resp) => {
 
     console.log(`x: ${req.query.w.x}, y: ${req.query.w.y}`);
     console.log(`getting character sheet request`);
-    nightmare.goto('https://www.dndbeyond.com/characters/4521436')
+    nightmare.goto(req.query.url)
     .viewport(parseInt(req.query.w.x),parseInt(req.query.w.y))
     .wait(selector)
     .evaluate(() => document.querySelector('.ct-character-sheet__inner').innerHTML)
@@ -97,25 +96,43 @@ app.get('/charSheet', (req,resp) => {
 
 //socket.io connection event
 io.on('connection', (socket) => {
+    var userName;
+    var addedUser = false;
+    
     //whiteboard socket
     socket.on('drawing', (data) => socket.broadcast.emit('drawing', data)); //register connection to the drawing event
     
     //rolls and chat socket
     socket.on('chat',(data)=>{ //handle rolls
-        if(data.indexOf('/r') >= 0 && data.indexOf('/r') <= 0 ){
-            var command = data.substring(3);
+        console.log(data.u);
+        socket.username = data.u;
+        if(data.c.indexOf('/r') >= 0 && data.c.indexOf('/r') <= 0 ){
+            var command = data.c.substring(3);
             var result = rollDice(command);
-            socket.broadcast.emit('chat',result);
+            //socket.broadcast.emit('chatRx',{r:result,u:socket.username});
+            io.emit('chatRx',{r:result,u:socket.username}); //needs to be changed when we have room instances
         }
         else
         {
-            socket.broadcast.emit('chat',data);
+            //socket.broadcast.emit('chatRx',{r:data.c,u:socket.username});
+            io.emit('chatRx',{r:data.c,u:socket.username}); //needs to be changed when we have room instances
         }
     });
     
     //webcam streaming
     socket.on('stream', (frame) => {
         socket.broadcast.emit('stream',frame);
+    });
+
+    
+    socket.on('addUser',(username) => {
+        console.log(username);
+        //if(addedUser) return;
+
+        socket.username = username;
+        userName = username;
+        addedUser = true;
+        console.log(socket.username);
     });
 });
 
@@ -151,7 +168,7 @@ function rollDice(command){
                 die = parseInt(diemod);
             }
 
-            if(multiplier > 5000){
+            if(multiplier > 15000){
                 return "too many dice to roll";
             }
 

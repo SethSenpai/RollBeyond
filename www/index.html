@@ -14,7 +14,8 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="/whiteboard.js"></script>
         <script src="/panning.js"></script>
-        <script src="webcam.js"></script>
+        <script src="/webcam.js"></script>
+        <script src="/userGroups.js"></script>
         <script src="/jquery-ui.min.js"></script>
     </head>
     <body>
@@ -33,7 +34,13 @@
                 </div>
                 </header>
                 <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">Roll Beyond Alpha</span>
+                    <span class="mdl-layout-title">Roll Beyond Alpha</span>
+                    <input class="enjoy-css trayInput" placeholder="User Name" id="userNameInput">
+                    <input class="enjoy-css trayInput" placeholder="Group Name" id="groupNameInput">
+                    <input class="enjoy-css trayInput" placeholder="Sheet URL" id="sheetURLInput">
+                    <button class="mdl-button mdl-js-button mdl-button--icon drawerButton" id="drawerEnterDetails">
+                        <i class="material-icons specialButton">send</i>
+                    </button>
                 </div>
                 <main class="mdl-layout__content">
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
@@ -103,7 +110,7 @@
             </div> 
             <div class="rollsBox">
                 <div class="rollsViewer">
-                    <span>where tha rolls at</span>
+                    <span>Use the chat window to roll dice!</span>
                 </div>
                 <div class="rollsEntry">
                     <input class="enjoy-css" placeholder="/r xdy(+/-)z" id="confirmEnterRoll">
@@ -130,19 +137,24 @@
             var creaturesDom;
             var movingWindow = false;
             var offset;
+            var userNameLocal;
+            var characterSheetLocal;
+            var dndGroupLocal;
+            var socket = io();
 
             $( document ).ready( ()=>{
+                //socket = io();
+                getUserInfo();
                 runGCS();
-                var socket = io();
                 startWhiteboard();
                 windowDraggingRolls();
                 enablerollsClick();
                 //runPanningHooks();
                 startWebCam();
 
-                socket.on('chat', (data)=>{
+                socket.on('chatRx', (data)=>{
                     console.log(`recieved: ${data}`);
-                    $('.rollsViewer').append(`<br>${data}`);
+                    $('.rollsViewer').append(`<br>${data.u}: ${data.r}`);
                     var t = $('.rollsViewer').prop('scrollHeight');
                     $('.rollsViewer').scrollTop(t);
                 });
@@ -151,7 +163,7 @@
 
             function runGCS(){                
                 var windowS = {x:window.innerWidth,y:window.innerHeight};
-                getCharSheet("login","another",windowS);
+                getCharSheet("login",characterSheetLocal,windowS);
             }
         </script>
     </body>

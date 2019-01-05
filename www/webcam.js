@@ -38,7 +38,7 @@ function startWebCam(){
     context.width = canvas.width;
     context.height = canvas.height;
     video = document.getElementById("video");
-    socket = io();
+    //socket = io();
     img = document.getElementById('play');
 
     navigator.getUserMedia= (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);

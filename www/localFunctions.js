@@ -1,7 +1,7 @@
 //import { Socket } from "dgram";
 
 function getCharSheet(login, charName, windowSize){
-    $.get('/charSheet',{w:windowSize}, (data)=>{
+    $.get('/charSheet',{url:charName,w:windowSize}, (data)=>{
         console.log(`requesting character sheet`);
         $('#charSheet').empty();
         $.when( $('#charSheet').append(data.b) )
@@ -30,7 +30,7 @@ function getCharSheet(login, charName, windowSize){
 }
 
 function enablerollsClick(){
-    var socket = io();
+    //var socket = io();
 
     $('#confirmRoll').click(()=>{
         var r = $('#confirmEnterRoll').val();
@@ -49,7 +49,7 @@ function enablerollsClick(){
 
     function sendRollToServer(r){
         console.log(`rolls send: ${r}`);
-        socket.emit('chat' , r);
+        socket.emit('chat' , {c:r,u:userNameLocal});
     }
 }
 

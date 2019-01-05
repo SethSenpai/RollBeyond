@@ -32,6 +32,10 @@ header.mdl-layout__header{
     color:#555 !important;
 }
 
+.mdl-layout__drawer{
+    z-index: 200 !important;
+}
+
 .mdl-layout__tab{
     color:#555 !important;
 }
@@ -44,6 +48,8 @@ header.mdl-layout__header{
 
 .whiteboard {
     background-color: #d9d8ca;
+    width: 2960px;
+    height: 1960px;
   }
   
   .colors {
@@ -71,11 +77,13 @@ header.mdl-layout__header{
   .pen {
       float: left;
       margin-right: 10px;
+      margin-top: 2px;
   }
 
   .mouse{
       float:left;
       margin-right:10px;
+      margin-top: 2px;
   }
   
   .color.black { background-color: black;}
@@ -149,6 +157,10 @@ header.mdl-layout__header{
     width:100px;
   }
 
+.trayInput{
+    width: 200px !important;
+}
+
 #whiteboardHolder{
     width:3000px;
     height:2000px;
@@ -172,11 +184,13 @@ header.mdl-layout__header{
 .imgadd{
     float: left;
     margin-right: 10px;
+    margin-top: -2px;
 }
 
 .pan{
     float: left;
     margin-right: 10px;
+    margin-top: 2px;
 }
 
 .webcams{
@@ -200,4 +214,10 @@ header.mdl-layout__header{
 
 .mdl-layout__content{
     overflow: scroll !important;
+}
+
+.drawerButton{
+    left: 188px !important;
+    float: right !important;
+    margin: 10px !important;
 }
